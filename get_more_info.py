@@ -109,6 +109,10 @@ def sent2labels(sent):
 
 
 def sent2tokens(sent):
+
+    for morph in sent:
+        print(morph)
+
     return [morph[0] for morph in sent]
 
 if __name__ == "__main__":
@@ -118,3 +122,5 @@ if __name__ == "__main__":
     print(train_sents[0])
     print("------------------")
     print(test_sents[0])
+
+    sent2tokens(train_sents[0])
