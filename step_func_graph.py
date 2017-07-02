@@ -5,6 +5,9 @@ def step_function(x):
     # xの各要素が０以上かどうかで、結果をnp.int
     return np.array(x > 0,dtype = np.int)
 
+def sigmoid(x)
+    return 1 / (1 + np.exp(-x))
+
 x = np.arange(-5.0,5.0,0.1)
 print(x)
 y = step_function(x)
