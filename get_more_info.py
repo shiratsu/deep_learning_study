@@ -1,5 +1,11 @@
 import sys
 
+from itertools import chain
+import pycrfsuite
+import sklearn
+from sklearn.metrics import classification_report
+from sklearn.preprocessing import LabelBinarizer
+
 from corpusreader import CorpusReader
 
 def is_hiragana(ch):
@@ -105,13 +111,15 @@ def sent2features(sent):
 
 
 def sent2labels(sent):
+
+    #-1は一番最後を取り出す
     return [morph[-1] for morph in sent]
 
 
 def sent2tokens(sent):
 
     for morph in sent:
-        print(morph)
+        print(morph[0])
 
     return [morph[0] for morph in sent]
 
@@ -124,3 +132,33 @@ if __name__ == "__main__":
     print(test_sents[0])
 
     sent2tokens(train_sents[0])
+    print("------------------")
+    sent2labels(train_sents[0])
+
+    # 学習用のデータを取り出す
+    X_train = [sent2features(s) for s in train_sents]
+    y_train = [sent2labels(s) for s in train_sents]
+
+    # こちらは検証用のデータ
+    X_test = [sent2features(s) for s in test_sents]
+    y_test = [sent2labels(s) for s in test_sents]
+
+
+    # 訓練用のデータの設定
+    trainer = pycrfsuite.Trainer(verbose=False)
+
+    for xseq, yseq in zip(X_train, y_train):
+        trainer.append(xseq, yseq)
+
+    # 訓練の設定
+    trainer.set_params({
+        'c1': 1.0,   # coefficient for L1 penalty
+        'c2': 1e-3,  # coefficient for L2 penalty
+        'max_iterations': 50,  # stop earlier
+
+        # include transitions that are possible, but not observed
+        'feature.possible_transitions': True
+    })
+
+    # 訓練の実行
+    trainer.train('model.crfsuite')
