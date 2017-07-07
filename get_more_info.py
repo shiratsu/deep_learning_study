@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 import sys
 
 from itertools import chain
@@ -103,6 +105,7 @@ def word2features(sent, i):
     else:
         features.append('EOS')
 
+    print(features)    
     return features
 
 
@@ -132,8 +135,10 @@ if __name__ == "__main__":
     print(test_sents[0])
 
     sent2tokens(train_sents[0])
+    print("---------sent2features---------")
+    sent2features(train_sents[0])
     print("------------------")
-    sent2labels(train_sents[0])
+
 
     # 学習用のデータを取り出す
     X_train = [sent2features(s) for s in train_sents]

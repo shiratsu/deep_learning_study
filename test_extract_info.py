@@ -46,6 +46,13 @@ if __name__ == "__main__":
     example_sent = test_sents[0]
     print(' '.join(get_more_info.sent2tokens(example_sent)))
 
+    print("-------------------example_sent----------------------")
+    print(example_sent)
+    print("-----------------------------------------")
+    print(get_more_info.sent2features(example_sent))
+    print("-----------------------------------------")
+    print(tagger.tag(get_more_info.sent2features(example_sent)))
+
     print("Predicted:", ' '.join(tagger.tag(get_more_info.sent2features(example_sent))))
     print("Correct:  ", ' '.join(get_more_info.sent2labels(example_sent)))
 
